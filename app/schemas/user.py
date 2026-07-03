@@ -8,28 +8,7 @@ from sqlalchemy import UUID
 
 
 class UserCreate(BaseModel):
-    class UserResponse(BaseModel):
-        id: UUID
-
-    full_name: str
-
-    username: str
-
-    email: EmailStr
-
-    profile_image: str | None
-
-    is_active: bool
-
-    is_verified: bool
-
-    created_at: datetime
-
-    updated_at: datetime
-
-    model_config = ConfigDict(
-         from_attributes=True 
-     )#what it does is it converts the  sqlalchemy object into what fastapi wants tells Pydantic:
+#what it does is it converts the  sqlalchemy object into what fastapi wants tells Pydantic:
 
 # "You are allowed to read attributes from normal Python objects." a sqlalchemy object is not a table but a pytho object that represents one row of a table
 
@@ -61,3 +40,29 @@ class UserCreate(BaseModel):
             )
 
         return self
+class UserResponse(BaseModel):
+        
+        id: UUID
+
+        full_name: str
+
+        username: str
+
+        email: EmailStr
+
+        profile_image: str | None
+
+        is_active: bool
+
+        is_verified: bool
+
+        created_at: datetime
+
+        updated_at: datetime
+
+        model_config = ConfigDict(
+         from_attributes=True 
+     )
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str        
