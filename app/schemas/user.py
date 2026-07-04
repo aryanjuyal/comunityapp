@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict
 from pydantic import EmailStr
 from pydantic import Field
 from pydantic import model_validator
-from sqlalchemy import UUID
+from uuid import UUID
 
 
 class UserCreate(BaseModel):
@@ -65,4 +65,8 @@ class UserResponse(BaseModel):
      )
 class UserLogin(BaseModel):
     email: EmailStr
-    password: str        
+    password: str   
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str         

@@ -9,6 +9,15 @@ from app.exceptions.user_exceptions import (
     InvalidCredentials,
     UsernameAlreadyExists,
 )
+def get_user_by_id(
+    db: Session,
+    user_id: str,
+):
+    return (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
 
 def authenticate_user(
       db:Session,
@@ -46,11 +55,12 @@ def create_user(
     db: Session,
     user_data: UserCreate,
 ):
-   if get_user_by_email(db, user_data.email):
-    raise EmailAlreadyExists()
+    print("Reached create_user")
+    if get_user_by_email(db, user_data.email):
+        raise EmailAlreadyExists()
 
-   if get_user_by_username(db, user_data.username):
-    raise UsernameAlreadyExists()
+    if get_user_by_username(db, user_data.username):
+        raise UsernameAlreadyExists()
 
     hashed_password = hash_password(user_data.password)
 
@@ -59,14 +69,14 @@ def create_user(
         username=user_data.username,
         email=user_data.email,
         hashed_password=hashed_password,
-        profile_image=user_data.profile_image,
-        is_active=user_data.is_active,
-        is_verified=user_data.is_verified,
+       
     )
 
     db.add(db_user)
+    print("Before commit")
     db.commit()
+
+    print("After commit")
     db.refresh(db_user)
 
     return db_user
- 

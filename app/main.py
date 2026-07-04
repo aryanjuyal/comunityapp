@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from sqlalchemy import text
-from api import user
+from app.api import user
 
 from app.db.database import engine
+from app.api import user
 
 app = FastAPI()
 app.include_router(user.router)
+
 
 @app.get("/")
 def root():
