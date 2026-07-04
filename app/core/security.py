@@ -1,10 +1,18 @@
+from fastapi.params import Depends
+from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash
 from datetime import datetime,timedelta,timezone
 import jwt 
+from sqlalchemy.orm import Session
+from app.db.session import get_db
 from app.core.config import settings
 from app.exceptions.user_exceptions import InvalidCredentials
 password_hash = PasswordHash.recommended()
 
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/users/login",
+)#oauth says to fast api that 
+# Whenever I write Depends(oauth2_scheme), read the Bearer token from the Authorization header."
 
 def hash_password(password: str) -> str:
     return password_hash.hash(password)
@@ -63,3 +71,7 @@ def decode_access_token(
 
     except jwt.InvalidTokenError:
         raise InvalidCredentials()
+
+
+    
+        

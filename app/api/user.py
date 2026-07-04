@@ -2,6 +2,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from fastapi import Depends
+from Backend.app.core.dependencies import get_current_user
+from Backend.app.models.user import User
 from app.core.security import create_access_token, verify_password
 from app.db.dependencies import get_db
 from app.services.user_service import authenticate_user, create_user, get_user_by_email
@@ -57,7 +59,14 @@ db:Session =  Depends(get_db)):
             detail="Username already exists.",
         ) 
 
-
+@router.get(
+    "/me",
+    response_model=UserResponse,
+)
+def get_me(
+    current_user: User = Depends(get_current_user),
+):
+    return current_user
   
 
 
